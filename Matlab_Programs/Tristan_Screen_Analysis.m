@@ -1,5 +1,5 @@
 clear
-%% 1) get single folder to test
+%% 1) Select Single Folder to Test
 pathname = uigetdir();
 pathname=[pathname,filesep];
 
@@ -11,7 +11,7 @@ numofexps = size(allfilescells,1);
 disp(['There are ' num2str(numofexps) ' files to analyse']);
 
 [filepath,filename] = fileparts(fileparts(pathname));
-workingDir = [filepath,filesep,filename,filesep,filename,filesep];
+workingDir = [filepath,filesep,filename,filesep,filename,'_Analysis',filesep];
 
 if ~exist(workingDir, 'dir')
    mkdir(workingDir)%make a subfolder with that name
@@ -33,8 +33,8 @@ for fileToCheck = 1:numofexps
     data = load(allfilescells{fileToCheck});
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot(data(:,1),'-r')
-    plot(-data(:,2),'-b')
+    plot(data(:,2),'-r')
+    plot(-data(:,1),'-b')
     xlabel('Time (ms)');
     ylabel('Photon burst');
     hold off
@@ -51,8 +51,8 @@ for fileToCheck = 1:numofexps
     data = load(allfilescells{fileToCheck});
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot((data(:,1)-median(data(:,1)))./std(data(:,1))+1,'-r')
-    plot(-(data(:,2)-median(data(:,2)))./std(data(:,2))-1,'-b')
+    plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-r')
+    plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-b')
     xlabel('Time (ms)');
     ylabel('std. devs.');
     ylim([-7 7])
@@ -135,8 +135,8 @@ for fileToCheck = 1:numofexps
     data = csvread([filteredDir,'Repeat_',num2str(fileToCheck),'.csv']);
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot(data(:,1),'-r')
-    plot(-data(:,2),'-b')
+    plot(data(:,2),'-r')
+    plot(-data(:,1),'-b')
     xlabel('Time (ms)');
     ylabel('Photon burst');
     hold off
@@ -154,8 +154,8 @@ for fileToCheck = 1:numofexps
     data = csvread([filteredDir,'Repeat_',num2str(fileToCheck),'.csv']);
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot((data(:,1)-median(data(:,1)))./std(data(:,1))+1,'-r')
-    plot(-(data(:,2)-median(data(:,2)))./std(data(:,2))-1,'-b')
+    plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-r')
+    plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-b')
     xlabel('Time (ms)');
     ylabel('std. devs.');
     ylim([-7 7])
@@ -351,7 +351,7 @@ for folderToAnalyse = 1:numOfFolders
     
 
     [filepath,filename] = fileparts(fileparts(pathname));
-    workingDir = [filepath,filesep,filename,filesep,filename,filesep];
+    workingDir = [filepath,filesep,filename,filesep,filename,'_Analysis',filesep];
 
     if ~exist(workingDir, 'dir')
        mkdir(workingDir)%make a subfolder with that name
@@ -373,8 +373,8 @@ for folderToAnalyse = 1:numOfFolders
         data = load(allfilescells{fileToCheck});
         subplot(rowsInTable,columnsInTables,fileToCheck)
         hold on
-        plot(data(:,1),'-r')
-        plot(-data(:,2),'-b')
+        plot(data(:,2),'-r')
+        plot(-data(:,1),'-b')
         xlabel('Time (ms)');
         ylabel('Photon burst');
         hold off
@@ -390,8 +390,8 @@ for folderToAnalyse = 1:numOfFolders
         data = load(allfilescells{fileToCheck});
         subplot(rowsInTable,columnsInTables,fileToCheck)
         hold on
-        plot((data(:,1)-median(data(:,1)))./std(data(:,1))+1,'-r')
-        plot(-(data(:,2)-median(data(:,2)))./std(data(:,2))-1,'-b')
+        plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-r')
+        plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-b')
         xlabel('Time (ms)');
         ylabel('std. devs.');
         ylim([-7 7])
@@ -463,8 +463,8 @@ for folderToAnalyse = 1:numOfFolders
         data = csvread([filteredDir,'Repeat_',num2str(fileToCheck),'.csv']);
         subplot(rowsInTable,columnsInTables,fileToCheck)
         hold on
-        plot(data(:,1),'-r')
-        plot(-data(:,2),'-b')
+        plot(data(:,2),'-r')
+        plot(-data(:,1),'-b')
         xlabel('Time (ms)');
         ylabel('Photon burst');
         hold off
@@ -481,8 +481,8 @@ for folderToAnalyse = 1:numOfFolders
         data = csvread([filteredDir,'Repeat_',num2str(fileToCheck),'.csv']);
         subplot(rowsInTable,columnsInTables,fileToCheck)
         hold on
-        plot((data(:,1)-median(data(:,1)))./std(data(:,1))+1,'-r')
-        plot(-(data(:,2)-median(data(:,2)))./std(data(:,2))-1,'-b')
+        plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-r')
+        plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-b')
         xlabel('Time (ms)');
         ylabel('std. devs.');
         ylim([-7 7])
@@ -631,6 +631,7 @@ for folderToAnalyse = 1:numOfFolders
     allFilenames2 = [allFilenames2;filename];
     
 end
+
 %%
 
 mbindgrads = zeros(numOfFolders,1);
