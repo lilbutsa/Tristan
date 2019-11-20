@@ -74,7 +74,7 @@ ch1MaxInt = 10000;
 ch2MinInt = 0;
 ch2MaxInt = 10000;
 
-minusMovingMedian = false;
+minusMovingMedian = true;
 movingmedianwindow = 1001;
 
 if alignData
@@ -337,7 +337,7 @@ ch1MaxInt = 10000;
 ch2MinInt = 0;
 ch2MaxInt = 10000;
 
-minusMovingMedian = false;
+minusMovingMedian = true;
 movingmedianwindow = 1001;
 
 weightChannel1Only = false;
