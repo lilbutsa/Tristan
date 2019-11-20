@@ -33,8 +33,8 @@ for fileToCheck = 1:numofexps
     data = load(allfilescells{fileToCheck});
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot(data(:,2),'-r')
-    plot(-data(:,1),'-b')
+    plot(data(:,2),'-b')
+    plot(-data(:,1),'-r')
     xlabel('Time (ms)');
     ylabel('Photon burst');
     hold off
@@ -42,6 +42,7 @@ end
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Raw_Traces']], '-dpng', '-r600')
+print([workingDir [filename,'_Raw_Traces']], '-depsc', '-r600')
 %% 3) Write out scaled traces
 
 opts.Colors= get(groot,'defaultAxesColorOrder');opts.width= 17.8;opts.height= 12;opts.fontType= 'Times';opts.fontSize= 9;
@@ -51,8 +52,8 @@ for fileToCheck = 1:numofexps
     data = load(allfilescells{fileToCheck});
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-r')
-    plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-b')
+    plot((data(:,2)-median(data(:,2)))./std(data(:,2))+1,'-b')
+    plot(-(data(:,1)-median(data(:,1)))./std(data(:,1))-1,'-r')
     xlabel('Time (ms)');
     ylabel('std. devs.');
     ylim([-7 7])
@@ -63,7 +64,7 @@ end
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Scaled_Traces']], '-dpng', '-r600')
-
+print([workingDir [filename,'_Scaled_Traces']], '-depsc', '-r600')
 %% 4) Filter Data
 alignData = true;
 
@@ -125,6 +126,7 @@ if alignData
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Channel_Alignment']], '-dpng', '-r600')
+    print([workingDir [filename,'_Channel_Alignment']], '-depsc', '-r600')
 end
 %% 5) Write out filtered raw traces
 
@@ -135,8 +137,8 @@ for fileToCheck = 1:numofexps
     data = csvread([filteredDir,'Repeat_',num2str(fileToCheck),'.csv']);
     subplot(rowsInTable,columnsInTables,fileToCheck)
     hold on
-    plot(data(:,2),'-r')
-    plot(-data(:,1),'-b')
+    plot(data(:,2),'-b')
+    plot(-data(:,1),'-r')
     xlabel('Time (ms)');
     ylabel('Photon burst');
     hold off
@@ -144,6 +146,7 @@ end
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Filtered_Raw_Traces']], '-dpng', '-r600')
+print([workingDir [filename,'_Filtered_Raw_Traces']], '-depsc', '-r600')
 %% 6) Write out filtered scaled traces
 
 
@@ -166,6 +169,7 @@ end
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Filtered_Scaled_Traces']], '-dpng', '-r600')
+print([workingDir [filename,'_Filtered_Scaled_Traces']], '-depsc', '-r600')
 %% 7) Linearly Fit
 weightChannel1Only = false;
 
@@ -190,7 +194,7 @@ for fileToCheck = 1:numofexps
     linearfit  = LinearModel.fit(data(:,1)-xmode,data(:,2)-ymode,'Weights',dists,'intercept',false);
     fit = linearfit.Coefficients.Estimate;
     mgradient = fit(1);
-    moffset = ymode - gradient.*xmode;
+    moffset = ymode - mgradient.*xmode;
 
     linearfit  = LinearModel.fit(data(:,1),data(:,2),'Weights',dists);
     fit = linearfit.Coefficients.Estimate;
@@ -232,6 +236,7 @@ end
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Density_Plots']], '-dpng', '-r600')
+print([workingDir [filename,'_Density_Plots']], '-depsc', '-r600')
 
 xmode = mode(allData(:,1));
 ymode =  mode(allData(:,2));
@@ -286,6 +291,7 @@ hold off
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([workingDir [filename,'_Pooled_Density_Plot']], '-dpng', '-r600');
+print([workingDir [filename,'_Pooled_Density_Plot']], '-depsc', '-r600');
 
 for i=1:size(allResults,2)
     allResults(numofexps+1,i) = mean(allResults(1:numofexps,i));
@@ -340,6 +346,9 @@ allResultTables = {};
 allFilenames = {};
 allFilenames2 = {};
 
+pooledResults = zeros(numOfFolders,14);
+stdDevResults = zeros(numOfFolders,14);
+
 for folderToAnalyse = 1:numOfFolders
    
     pathname = allfolderscells{folderToAnalyse};
@@ -373,8 +382,8 @@ for folderToAnalyse = 1:numOfFolders
         data = load(allfilescells{fileToCheck});
         subplot(rowsInTable,columnsInTables,fileToCheck)
         hold on
-        plot(data(:,2),'-r')
-        plot(-data(:,1),'-b')
+        plot(data(:,2),'-b')
+        plot(-data(:,1),'-r')
         xlabel('Time (ms)');
         ylabel('Photon burst');
         hold off
@@ -382,6 +391,7 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Raw_Traces']], '-dpng', '-r600')
+    print([workingDir [filename,'_Raw_Traces']], '-depsc', '-r600')
     
     opts.Colors= get(groot,'defaultAxesColorOrder');opts.width= 17.8;opts.height= 12;opts.fontType= 'Times';opts.fontSize= 9;
     fig = figure('Name',[filename,' Scaled Traces'],'visible','off');fig.Units= 'centimeters';fig.Position(3)= opts.width;fig.Position(4)= opts.height;
@@ -402,7 +412,7 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Scaled_Traces']], '-dpng', '-r600')
-    
+    print([workingDir [filename,'_Scaled_Traces']], '-depsc', '-r600')
     
     if alignData
         opts.Colors= get(groot,'defaultAxesColorOrder');opts.width= 17.8;opts.height= 12;opts.fontType= 'Times';opts.fontSize= 9;
@@ -453,6 +463,7 @@ for folderToAnalyse = 1:numOfFolders
         set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
         fig.PaperPositionMode   = 'auto';
         print([workingDir [filename,'_Channel_Alignment']], '-dpng', '-r600')
+        print([workingDir [filename,'_Channel_Alignment']], '-depsc', '-r600')
     end
     
     
@@ -472,7 +483,7 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Filtered_Raw_Traces']], '-dpng', '-r600')
-
+    print([workingDir [filename,'_Filtered_Raw_Traces']], '-depsc', '-r600')
 
     opts.Colors= get(groot,'defaultAxesColorOrder');opts.width= 17.8;opts.height= 12;opts.fontType= 'Times';opts.fontSize= 9;
     fig = figure('Name',[filename,' Filtered Scaled Traces'],'visible','off');fig.Units= 'centimeters';fig.Position(3)= opts.width;fig.Position(4)= opts.height;
@@ -493,6 +504,7 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Filtered_Scaled_Traces']], '-dpng', '-r600')
+    print([workingDir [filename,'_Filtered_Scaled_Traces']], '-depsc', '-r600')
     
     allData = [];
     allResults = zeros(numofexps+3,14);
@@ -557,7 +569,8 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Density_Plots']], '-dpng', '-r600')
-
+    print([workingDir [filename,'_Density_Plots']], '-depsc', '-r600')
+    
     xmode = mode(allData(:,1));
     ymode =  mode(allData(:,2));
     if weightChannel1Only
@@ -611,13 +624,21 @@ for folderToAnalyse = 1:numOfFolders
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
     print([workingDir [filename,'_Pooled_Density_Plot']], '-dpng', '-r600');
-
+    print([workingDir [filename,'_Pooled_Density_Plot']], '-depsc', '-r600');
+    
     for i=1:size(allResults,2)
         allResults(numofexps+1,i) = mean(allResults(1:numofexps,i));
         if numofexps>1
             allResults(numofexps+2,i) = std(allResults(1:numofexps,i));
         end
     end
+    
+    
+    pooledResults(folderToAnalyse,:) =  allResults(numofexps+3,:);
+    stdDevResults(folderToAnalyse,:) = allResults(numofexps+2,:);
+    
+    
+    
 
     T = array2table(allResults);
     T.Properties.VariableNames= matlab.lang.makeValidName({'Ch1_Mode','Ch2_Mode','Offset','Gradient','Offset(Mode_Constrained)','Gradient(Mode_Constrained)', 'Ch1_Mean','Ch2_Mean', 'Ch1_Std_Dev','Ch2_Std_Dev','Ch1_Median','Ch2_Median','Ch1_B-value','Ch2_B-value'});
@@ -632,25 +653,22 @@ for folderToAnalyse = 1:numOfFolders
     
 end
 
-%%
+T = array2table(pooledResults);
+T.Properties.VariableNames= matlab.lang.makeValidName({'Ch1_Mode','Ch2_Mode','Offset','Gradient','Offset(Mode_Constrained)','Gradient(Mode_Constrained)', 'Ch1_Mean','Ch2_Mean', 'Ch1_Std_Dev','Ch2_Std_Dev','Ch1_Median','Ch2_Median','Ch1_B-value','Ch2_B-value'});
+T.Properties.RowNames = allFilenames2;
+writetable(T, [foldername,'Pooled_Summary.csv'],'WriteRowNames',true);
 
-mbindgrads = zeros(numOfFolders,1);
-mbindgradstsdev = zeros(numOfFolders,1);
-errormins = zeros(numOfFolders,1);
-fitdiff = zeros(numOfFolders,1);
-for i=1:numOfFolders
-    resultsin  = allResultTables{i};
-    mbindgrads(i,1) = resultsin(end,6);
-    mbindgradstsdev(i,1) = resultsin(end-1,6);
-    
-    if mbindgradstsdev(i,1)>mbindgrads(i,1)
-        errormins(i,1) = mbindgrads(i,1);
-    else
-        errormins(i,1) = mbindgradstsdev(i,1);
-    end
-    
-    fitdiff(i) = abs(0.5.*(resultsin(end,4) - resultsin(end,6))./(resultsin(end,4) + resultsin(end,6)));
-end
+T = array2table(stdDevResults);
+T.Properties.VariableNames= matlab.lang.makeValidName({'Ch1_Mode','Ch2_Mode','Offset','Gradient','Offset(Mode_Constrained)','Gradient(Mode_Constrained)', 'Ch1_Mean','Ch2_Mean', 'Ch1_Std_Dev','Ch2_Std_Dev','Ch1_Median','Ch2_Median','Ch1_B-value','Ch2_B-value'});
+T.Properties.RowNames = allFilenames2;
+writetable(T, [foldername,'Standard_Deviation_Summary.csv'],'WriteRowNames',true);
+%%
+mbindgrads = pooledResults(:,6);
+mbindgradstsdev = stdDevResults(:,6);
+errormins = mbindgradstsdev;
+errormins(mbindgradstsdev>mbindgrads) = mbindgrads(mbindgradstsdev>mbindgrads);
+fitdiff = abs(0.5.*(pooledResults(:,4) - pooledResults(:,6))./(pooledResults(:,4) + pooledResults(:,6)));
+
 
 
 %%
@@ -661,7 +679,8 @@ hold on
 bar(1:numOfFolders,mbindgrads,'FaceColor',[0.8500, 0.3250, 0.0980])                
 er = errorbar(1:numOfFolders,mbindgrads,errormins,mbindgradstsdev);    
 er.Color = [0 0 0];                            
-er.LineStyle = 'none';  
+er.LineStyle = 'none';
+xticks(1:numOfFolders)
 xticklabels(allFilenames);
 xtickangle(45)
 ylabel('Binding Ratio (Ch2/Ch1)')
@@ -669,20 +688,26 @@ hold off
 set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
 fig.PaperPositionMode   = 'auto';
 print([foldername 'Binding_Ratios'], '-dpng', '-r600');
+print([foldername 'Binding_Ratios'], '-depsc', '-r600');
 %%
 figure
 bar(1:numOfFolders,fitdiff,'FaceColor',[0.8500, 0.3250, 0.0980])                
-hold on   
+hold on
+xticks(1:numOfFolders)
 xticklabels(allFilenames);
 xtickangle(45)
 hold off
 print([foldername 'Fit Difference'], '-dpng', '-r600');
+print([foldername 'Fit Difference'], '-depsc', '-r600');
 %%
 columnsInTables = 3;
     fig = figure;
     allPanels = {};
     for i=1:numOfFolders
-        allPanels = [allPanels imread([allfolderscells{i} allFilenames2{i} filesep allFilenames2{i} '_Pooled_Density_Plot.png'])];
+        allPanels = [allPanels imread([allfolderscells{i} allFilenames2{i} '_Analysis' filesep allFilenames2{i} '_Pooled_Density_Plot.png'])];
     end
 
     montage(allPanels,'BorderSize',[10 100],'BackgroundColor','white','ThumbnailSize',[], 'Size', [ceil(numOfFolders/columnsInTables) columnsInTables]);
+print([foldername 'Scatter_Plot_Montage'], '-dpng', '-r600');
+print([foldername 'Scatter_Plot_Montage'], '-depsc', '-r600');    
+    
