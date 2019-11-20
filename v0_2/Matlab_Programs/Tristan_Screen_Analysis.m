@@ -22,7 +22,7 @@ if ~exist(filteredDir, 'dir')
    mkdir(filteredDir)%make a subfolder with that name
 end
 %% 2) Write out raw traces
-columnsInTables = 3;
+columnsInTables = 5;
 
 rowsInTable = ceil(numofexps/columnsInTables);
 
@@ -327,7 +327,7 @@ numOfFolders = size(allfolderscells,1);
 
 disp(['There are ' num2str(numOfFolders) ' folders to analyse']);
 %% Run batch analysis
-columnsInTables = 3;
+columnsInTables = 5;
 
 alignData = true;
 
@@ -582,7 +582,7 @@ for folderToAnalyse = 1:numOfFolders
     linearfit  = LinearModel.fit(allData(:,1)-xmode,allData(:,2)-ymode,'Weights',dists,'intercept',false);
     fit = linearfit.Coefficients.Estimate;
     mgradient = fit(1);
-    moffset = ymode - gradient.*xmode;
+    moffset = ymode - mgradient.*xmode;
 
     linearfit  = LinearModel.fit(allData(:,1),allData(:,2),'Weights',dists);
     fit = linearfit.Coefficients.Estimate;
