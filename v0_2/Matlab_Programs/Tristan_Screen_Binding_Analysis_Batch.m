@@ -41,6 +41,10 @@ allFilenames2 = {};
 pooledResults = zeros(numOfFolders,14);
 stdDevResults = zeros(numOfFolders,14);
 
+manualAxisRange = false;
+xAxis = [-100 15000];
+yAxis = [-100 15000];
+
 
 for folderToAnalyse = 1:numOfFolders
    
@@ -268,6 +272,12 @@ for folderToAnalyse = 1:numOfFolders
         plot(bxout,byout2,'LineWidth',1)
         xlabel('Channel 1 Signal');
         ylabel('Channel 2 Signal')
+        
+        if manualAxisRange
+            xlim(xAxis)
+            ylim(yAxis)
+        end
+        
         hold off
         %disp(['Channel 2 to Channel 1 Intensity Ratio of binding for file ' num2str(fileToCheck) ' is ' gradient]);
 
@@ -326,6 +336,11 @@ for folderToAnalyse = 1:numOfFolders
     plot(bxout,byout2,'LineWidth',1)
     xlabel('Channel 1 Signal');
     ylabel('Channel 2 Signal')
+    if manualAxisRange
+        xlim(xAxis)
+        ylim(yAxis)
+    end
+    
     hold off
     set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02));
     fig.PaperPositionMode   = 'auto';
@@ -343,7 +358,6 @@ for folderToAnalyse = 1:numOfFolders
     pooledResults(folderToAnalyse,:) =  allResults(numofexps+3,:);
     stdDevResults(folderToAnalyse,:) = allResults(numofexps+2,:);
     
-
     T = array2table(allResults);
     T.Properties.VariableNames= matlab.lang.makeValidName({'Ch1_Mode','Ch2_Mode','Offset','Gradient','Offset(Mode_Constrained)','Gradient(Mode_Constrained)', 'Ch1_Mean','Ch2_Mean', 'Ch1_Std_Dev','Ch2_Std_Dev','Ch1_Median','Ch2_Median','Ch1_B-value','Ch2_B-value'});
     myrownames = arrayfun(@(y) ['_' allfiles(y).name(constStringEnd:end)],1:numofexps,'UniformOutput',false);
