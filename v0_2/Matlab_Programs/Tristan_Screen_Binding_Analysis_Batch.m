@@ -363,7 +363,7 @@ for folderToAnalyse = 1:numOfFolders
     myrownames = arrayfun(@(y) ['_' allfiles(y).name(constStringEnd:end)],1:numofexps,'UniformOutput',false);
     myrownames = [myrownames [{'Mean'} {'Std. Dev.'} {'Pooled'}]];
     T.Properties.RowNames = myrownames';
-    writetable(T, [workingDir,'Correlation_Summary.csv'],'WriteRowNames',true);
+    writetable(T, [workingDir,filename,'Correlation_Summary.csv'],'WriteRowNames',true);
     
     allResultTables = [allResultTables;allResults];
     allFilenames = [allFilenames;strrep(filename,'_','\_')];

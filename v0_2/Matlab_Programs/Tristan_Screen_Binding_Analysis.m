@@ -336,7 +336,7 @@ T = array2table(allResults);
 T.Properties.VariableNames= matlab.lang.makeValidName({'Ch1_Mode','Ch2_Mode','Offset','Gradient','Offset(Mode_Constrained)','Gradient(Mode_Constrained)', 'Ch1_Mean','Ch2_Mean', 'Ch1_Std_Dev','Ch2_Std_Dev','Ch1_Median','Ch2_Median','Ch1_B-value','Ch2_B-value'});
 
 T.Properties.RowNames = myrownames;
-writetable(T, [workingDir,'Correlation_Summary.csv'],'WriteRowNames',true);
+writetable(T, [workingDir,filename,'Correlation_Summary.csv'],'WriteRowNames',true);
     
 
     
