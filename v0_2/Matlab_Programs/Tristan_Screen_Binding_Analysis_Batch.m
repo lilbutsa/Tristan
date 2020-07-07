@@ -10,17 +10,17 @@ numOfFolders = size(allfolderscells,1);
 
 disp(['There are ' num2str(numOfFolders) ' folders to analyse']);
 %% Run batch analysis
-columnsInTables = floor(sqrt(numofexps));
-%columnsInTables = 3; Uncomment this to manually set it
+autoColumnsinTable = true;
+columnsInTables = 3; %Or manually set it
+columnsInTablesAlignPlots = 3; %Or manually set it
 
 topColour = [1, 0, 0];
 bottomColour = [0, 0, 1];
 bottomChannel1 = true;
 
 alignData = false;
-columnsInTablesAlignPlots = floor(sqrt(numofexps));
-%columnsInTablesAlignPlots = 3; Uncomment this to manually set it
 
+%
 %cutoffs
 ch1MinInt = 0;
 ch1MaxInt = 10000;
@@ -64,7 +64,15 @@ for folderToAnalyse = 1:numOfFolders
     end
     disp(['Analysing ' filename]);
     disp(['There are ' num2str(numofexps) ' files to analyse']);
+    
+    maxCharLength = max(arrayfun(@(x) size(x.name,2),allfiles));
+    constStringEnd = find(all(cell2mat(arrayfun(@(x) (pad(allfiles(1).name,maxCharLength)==pad(x.name,maxCharLength)),allfiles,'UniformOutput',false)))==0,1,'first');
 
+    if autoColumnsinTable
+        columnsInTables = floor(sqrt(numofexps));
+        columnsInTablesAlignPlots = floor(sqrt(numofexps));
+    end
+    
     rowsInTable = ceil(numofexps/columnsInTables);
     rowsInTableAlignPlots = ceil(numofexps/columnsInTables);
 
